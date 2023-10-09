@@ -65,8 +65,6 @@ app = Flask(__name__)
 
 ##
 # Render the HTML content
-
-
 @app.route("/", methods=['GET'])
 def index():
 
@@ -83,8 +81,6 @@ def index():
 
 ##
 # Refresh action
-
-
 @app.route("/refresh", methods=['POST'])
 def refresh():
 
