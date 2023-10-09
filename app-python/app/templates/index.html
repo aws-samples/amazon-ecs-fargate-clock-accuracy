@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <!--
+    #
+    # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+    # SPDX-License-Identifier: MIT-0
+    #
+    # Permission is hereby granted, free of charge, to any person obtaining a copy of this
+    # software and associated documentation files (the "Software"), to deal in the Software
+    # without restriction, including without limitation the rights to use, copy, modify,
+    # merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+    # permit persons to whom the Software is furnished to do so.
+    #
+    # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+    # INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+    # PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+    # HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+    # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+    # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    #
+  -->
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Welcome to Amazon ECS!</title>
+    <style>
+      body {
+        color: #f9efe7;
+        background-color: #f9efe7;
+        font-family: Arial, sans-serif;
+        font-size:14px;
+        -moz-transition-property: text-shadow;
+        -moz-transition-duration: 4s;
+        -webkit-transition-property: text-shadow;
+        -webkit-transition-duration: 4s;
+        text-shadow: none;
+      }
+      .textarea {
+        width: 320px;
+        height: 22px;
+        color: #7b7b7b;
+        background-color: rgb(227, 248, 255);
+        font-size: 1em;
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        border: 1px solid #7b7b7b;
+        text-align: justify;
+        -moz-text-align-last: center;
+        text-align-last: center;
+      }
+      .textlabel {
+        color: #7b7b7b;
+        font-size: 18px;
+        font-weight: bold;
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        text-align: justify;
+        -moz-text-align-last: center;
+        text-align-last: center;
+      }
+      body.blurry {
+        -moz-transition-property: text-shadow;
+        -moz-transition-duration: 4s;
+        -webkit-transition-property: text-shadow;
+        -webkit-transition-duration: 4s;
+        text-shadow: #fff 0px 0px 25px;
+      }
+      a {
+        color: #01aaff;
+      }
+      .textColumn, .linksColumn {
+        padding: 2em;
+      }
+      .textColumn {
+        position: absolute;
+        font-family: sans-serif;
+        top: 0px;
+        right: 35%;
+        bottom: 0px;
+        left: 0px;
+        text-align: right;
+        padding-top: 11em;
+        background-color: #fdd5b8;
+        color: #7b7b7b;
+      }
+      .textColumn p {
+        width: 75%;
+        float:right;
+      }
+      .linksColumn {
+        position: absolute;
+        top:0px;
+        right: 0px;
+        bottom: 0px;
+        left: 65%;
+        padding-top: 17em;
+        font-size: 15px;
+        color: #fdd5b8;
+        background-color: #7b7b7b;
+      }
+      .wrapper {
+        text-align: center;
+      }
+      .button {
+          position: absolute;
+          top: 50%;
+      }
+      h1 {
+        font-size: 500%;
+        font-weight: normal;
+        margin-bottom: 0em;
+      }
+      h2 {
+        font-size: 200%;
+        font-weight: normal;
+        margin-bottom: 0em;
+      }
+      ul {
+        padding-left: 1em;
+        margin: 0px;
+      }
+      li {
+        margin: 1em 0em;
+      }
+      .fancybutton,
+      .fancybutton:after {
+      width: 190px;
+      height: 40px;
+      line-height: 78px;
+      font-size: 20px;
+      font-family: sans-serif;
+      background: linear-gradient(45deg, transparent 5%, #7b7b7b 5%);
+      border: 0;
+      color: #fdd5b8;
+      letter-spacing: 3px;
+      outline: transparent;
+      position: relative;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+    .fancybutton:after {
+      --slice-0: inset(50% 50% 50% 50%);
+      --slice-1: inset(80% -6px 0 0);
+      --slice-2: inset(50% -6px 30% 0);
+      --slice-3: inset(10% -6px 85% 0);
+      --slice-4: inset(40% -6px 43% 0);
+      --slice-5: inset(80% -6px 5% 0);
+      content: 'CLICK ME';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent 3%, #00E6F6 3%, #00E6F6 5%, rgb(227, 248, 255) 5%);
+      text-shadow: -3px -3px 0px #F8F005, 3px 3px 0px #00E6F6;
+      clip-path: var(--slice-0);
+    }
+    .fancybutton:hover:after {
+      animation: 1s glitch;
+      animation-timing-function: steps(2, end);
+    }
+    @keyframes glitch {
+      0% {
+        clip-path: var(--slice-1);
+        transform: translate(-20px, -10px);
+      }
+      10% {
+        clip-path: var(--slice-3);
+        transform: translate(10px, 10px);
+      }
+      20% {
+        clip-path: var(--slice-1);
+        transform: translate(-10px, 10px);
+      }
+      30% {
+        clip-path: var(--slice-3);
+        transform: translate(0px, 5px);
+      }
+      40% {
+        clip-path: var(--slice-2);
+        transform: translate(-5px, 0px);
+      }
+      50% {
+        clip-path: var(--slice-3);
+        transform: translate(5px, 0px);
+      }
+      60% {
+        clip-path: var(--slice-4);
+        transform: translate(5px, 10px);
+      }
+      70% {
+        clip-path: var(--slice-2);
+        transform: translate(-10px, 10px);
+      }
+      80% {
+        clip-path: var(--slice-5);
+        transform: translate(20px, -10px);
+      }
+      90% {
+        clip-path: var(--slice-1);
+        transform: translate(-10px, 0px);
+      }
+      100% {
+        clip-path: var(--slice-1);
+        transform: translate(0);
+      }
+    }
+    @media (min-width: 768px) {
+      .fancybutton,
+      .fancybutton:after {
+        width: 245px;
+        height: 40px;
+        line-height: 22px;
+      }
+    }
+ </style>
+</head>
+<body id="sample">
+  <div class="textColumn">
+    <h1>Amazon ECS demo</h1>
+    <p>Your Docker containers are now running in the AWS Cloud.</p>
+    <p>This environment is launched with Amazon ECS Fargate platform.</p>
+    <form method="POST" action="/refresh">
+      <p><label class="textlabel" for="details">Task ID  </label><input class="textarea" value='{{ details }}' type="text" id="details" name="details" readonly></p>
+      <p><label class="textlabel" for="clockerror">Clock error bound  </label><input class="textarea" value='{{ clock_error_bound }}' type="text" id="clockerror" name="clockerror" readonly></p>
+      <p><label class="textlabel" for="reftimestamp">Reference Timestamp  </label><input class="textarea" value='{{ reference_timestamp }}' type="text" id="reftimestamp" name="reftimestamp" readonly></p>
+      <p><label class="textlabel" for="syncstatus">Clock synchronisation status   </label><input class="textarea" value='{{ clock_sync_status }}' type="text" id="syncstatus" name="syncstatus" readonly></p>
+
+      <p><button class="fancybutton" name="refreshBtn" type="submit">Refresh</button></p>
+    </form>
+  </div>
+  <div class="linksColumn"> 
+    <h2>Video Tutorials</h2>
+    <ul>
+    <li>YouTube: <a href="https://www.youtube.com/watch?v=FnFvpIsBrog">Amazon ECS overview</a></li>
+    <li>YouTube: <a href="https://www.youtube.com/playlist?list=PLhr1KZpdzukef_4labkwEs9CbK-MvReKS">AWS Containers playlist</a></li>
+    </ul>
+    <h2>Documentation</h2>
+    <ul>
+    <li><a href="https://aws.amazon.com/ecs">Amazon ECS</a></li>
+    <li><a href="https://aws.amazon.com/fargate">Amazon Fargate</a></li>
+    <li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html">Amazon ECS Documentation</a></li>
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+{   
+    "family": "ecs-clock-accuracy-test",
+    "containerDefinitions": [
+        {
+            "name": "app-python",
+            "image": "PYTHON_URI_PLACEHOLDER",
+            "portMappings": [
+                {
+                    "containerPort": 80,
+                    "hostPort": 80,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/ecs-clock-accuracy-test",
+                    "awslogs-region": "REGION_PLACEHOLDER",
+                    "awslogs-stream-prefix": "app-python"
+                }
+            }
+        },
+        {
+            "name": "cron-worker",
+            "image": "WORKER_URI_PLACEHOLDER",
+            "essential": true,
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/ecs-clock-accuracy-test",
+                    "awslogs-region": "REGION_PLACEHOLDER",
+                    "awslogs-stream-prefix": "cron-workers"
+                }
+            }
+        }
+    ],
+    "networkMode": "awsvpc",
+    "executionRoleArn": "arn:aws:iam::ACCOUNTID_PLACEHOLDER:role/ecsTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::ACCOUNTID_PLACEHOLDER:role/ecsTaskExecutionRole",
+    "requiresCompatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "cpu": "512",
+    "memory": "1024"
+}

@@ -1,0 +1,132 @@
+#
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: MIT-0
+#
+AWSTemplateFormatVersion: '2010-09-09'
+Description: ECS Fargate deployment for demonstration purposes
+
+
+Parameters:
+
+  ProjectName:
+    Type: String
+    Default: ecsclockdemo
+    Description: Amazon ECS Cluster name
+
+
+Resources:
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /ecs/ecs-clock-accuracy-test
+
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: !Sub ${ProjectName}
+      ClusterSettings:
+        - Name: containerInsights
+          Value: enabled
+      CapacityProviders:
+        - FARGATE
+        - FARGATE_SPOT
+      DefaultCapacityProviderStrategy:
+        - Base: 0
+          CapacityProvider: FARGATE
+          Weight: 1
+
+  ECRRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: !Sub ${AWS::StackName}
+      ImageScanningConfiguration:
+        ScanOnPush: true
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: ecsclockdemo
+      ContainerDefinitions:
+        - Name: app-python
+          Image: !Sub ${ECRRepository.RepositoryUri}:app-python
+          PortMappings:
+            - ContainerPort: 80
+              HostPort: 80
+              Protocol: tcp
+          Essential: true
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-create-group: 'true'
+              awslogs-group: /ecs/ecs-clock-accuracy-test
+              awslogs-region: !Ref 'AWS::Region'
+              awslogs-stream-prefix: app-python
+        - Name: cron-worker
+          Image: !Sub ${ECRRepository.RepositoryUri}:cron-worker
+          Essential: true
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-create-group: 'true'
+              awslogs-group: /ecs/ecs-clock-accuracy-test
+              awslogs-region: !Ref 'AWS::Region'
+              awslogs-stream-prefix: cron-worker
+      NetworkMode: awsvpc
+      ExecutionRoleArn: !GetAtt ExecutionRole.Arn
+      TaskRoleArn: !GetAtt TaskRole.Arn
+      RequiresCompatibilities:
+        - EC2
+        - FARGATE
+      Cpu: '512'
+      Memory: '1024'
+
+  ExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+              - ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+
+  TaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+              - ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: !Sub ${AWS::StackName}-TaskRolePolicies
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+                - Sid: CWAccess
+                  Effect: Allow
+                  Action:
+                    - cloudwatch:PutMetricData
+                  Resource: '*'
+                - Sid: EcsExec
+                  Effect: Allow
+                  Action:
+                    - ssmmessages:CreateControlChannel
+                    - ssmmessages:CreateDataChannel
+                    - ssmmessages:OpenControlChannel
+                    - ssmmessages:OpenDataChannel
+                  Resource: '*'
+
+Outputs:
+  AppURL:
+    Description: URL of the Load Balancer
+    Value: !GetAtt TaskRole.Arn
