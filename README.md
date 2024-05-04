@@ -104,11 +104,6 @@ Contributions and feedback are welcome! Proposals and pull requests will be cons
 Amazon Web Services does not currently provide support for modified copies of this software.
 
 
-## Changelog
-
-Refer to the [Changelog section](./CHANGELOG.md).
-
-
 ## License
 
 The Amazon ECS agent connection monitoring solution is distributed under the [MIT-0 License](https://github.com/aws/mit-0). See [LICENSE](./LICENSE) for more information.
